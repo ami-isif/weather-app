@@ -1,13 +1,44 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-image: url(wRTamf.jpg);
+  background-size: cover;
+  background-repeat:no-reapeat;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.login-page {
+  width:  400px;
+  margin: 0 auto;
+  margin-top: 120px;
+  background-color: rgb(157, 202, 219) !important ;
+}
+
+.signup-page {
+  width:  400px;
+  margin: 0 auto;
+  margin-top: 120px;
+  background-color: rgb(209, 200, 189) !important ;
+}
+
+.search-form {
+  display : flex !important;
+width: 100%;
+}
+
+.search-form .search-input-parent {
+  flex: 1;
+}
+
+.search-form .search-btn {
+  width: 180px;
+}
+
+.weather-header-area{
+  background-color: rgba(225,225,225,1.5);
+}
+
+.location-text {
+display: inline-block;
+border-radius: 10px;
+background-color:rgb(64, 136, 177);
+color: white;
+padding: 10px 40px;
 }
