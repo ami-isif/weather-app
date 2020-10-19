@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function Home (){
-
+/* eslint-disable react-hooks/exhaustive-deps */
   const [weatherInfo, setWeatherInfo] = useState(null);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [searchInputValue, setSearchInputValue] = useState("");
@@ -42,16 +42,16 @@ function Home (){
   }, [])
 
 useEffect(() => {
-  if(weatherInfo!== null) {
+  if(weatherInfo !== null) {
     setIsDataLoaded(true);
   }
-} ,[weatherInfo]);
+}, [weatherInfo]);
 
 useEffect(()=> {
-  if(weatherInfo !== null){ 
+  if(weatherInfo !== null) { 
    apiWeatherRequest(searchLocation)
   }
-},[searchLocation]);
+}, [searchLocation]);
 
   return(
     <div className="container">
