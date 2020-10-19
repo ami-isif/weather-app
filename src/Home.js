@@ -1,29 +1,83 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function Home (){
-return(
+
+  const [weatherInfo, setWeatherInfo] = useState(null);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [searchInputValue, setSearchInputValue] = useState("");
+  const [searchLocation, setSearchLocation] = useState("Accra");
+
+  function handleLoctionChange(event) {
+    event.preventDefault();
+    setSearchLocation(searchInputValue);
+  }
+
+  function handleSearchInputChange(event) {  
+     setSearchInputValue(event.target.value);
+  }
+
+  function apiWeatherRequest(userLocation) {
+
+      axios.get("http://api.weatherstack.com/current", { 
+      params: {
+        access_key: "a27c5a03f580ad96e0c2910643638fb5",
+        query: userLocation
+      }
+    })
+      .then( (response) => {
+        console.log(response);
+        setWeatherInfo(response.data);
+      })
+      .catch( (err) => {
+        console.log(err);
+      });
+   }
+
+  useEffect( ()=> {
+    navigator.geolocation.getCurrentPosition((position) =>{
+      var userPosition =position.coords.latitude + "," + position.coords.longitude;
+      apiWeatherRequest(userPosition);
+    })
+  }, [])
+
+useEffect(() => {
+  if(weatherInfo!== null) {
+    setIsDataLoaded(true);
+  }
+} ,[weatherInfo]);
+
+useEffect(()=> {
+  if(weatherInfo !== null){ 
+   apiWeatherRequest(searchLocation)
+  }
+},[searchLocation]);
+
+  return(
     <div className="container">
 
      <div className="weather-header-area text-center p-5 mb-5">
-          <p className="location-text">Amsterdarm</p>
-    </div>
+      <p className="location-text"> <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-geo-fill location icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+<path fillRule="evenodd" d="M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999zm2.493 8.574a.5.5 0 0 1-.411.575c-.712.118-1.28.295-1.655.493a1.319 1.319 0 0 0-.37.265.301.301 0 0 0-.057.09V14l.002.008a.147.147 0 0 0 .016.033.617.617 0 0 0 .145.15c.165.13.435.27.813.395.751.25 1.82.414 3.024.414s2.273-.163 3.024-.414c.378-.126.648-.265.813-.395a.619.619 0 0 0 .146-.15.148.148 0 0 0 .015-.033L12 14v-.004a.301.301 0 0 0-.057-.09 1.318 1.318 0 0 0-.37-.264c-.376-.198-.943-.375-1.655-.493a.5.5 0 1 1 .164-.986c.77.127 1.452.328 1.957.594C12.5 13 13 13.4 13 14c0 .426-.26.752-.544.977-.29.228-.68.413-1.116.558-.878.293-2.059.465-3.34.465-1.281 0-2.462-.172-3.34-.465-.436-.145-.826-.33-1.116-.558C3.26 14.752 3 14.426 3 14c0-.599.5-1 .961-1.243.505-.266 1.187-.467 1.957-.594a.5.5 0 0 1 .575.411z"/>
+      </svg> {isDataLoaded ? weatherInfo.location.name : "loading..."}</p>
+      </div>
        
-    <div className="d-flex weather-div justify-content-center">
-       <img src="data:image/png;base64,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" width="60" alt="weather-icon"/>
-       <h1 className="mx-4">28<sup>0</sup></h1>
-       <h1>Today</h1>
+       <div className="d-flex weather-div justify-content-center">
+       <img src={isDataLoaded ? weatherInfo.current.weather_icons[0] : "..."} width="60" alt="weather-icon"/>
+       <h1 className="mx-4">{isDataLoaded ? weatherInfo.current.temperature : "-"}<sup>0</sup></h1>
+       <h2>Today</h2>
     </div>
 
-    <p className ="font-weight-bold text-center mb-5">cloudy with rain</p>
+    <p className ="font-weight-bold text-center mb-5"> {isDataLoaded ? weatherInfo.current.weather_descriptions[0] : "Loading..."} </p>
 
 
 
 
 <form className="form search-form">
     <div className="form-group mx-sm-3 mb-2 search-input-parent">
-      <input type="text" className="search-input form-control" id="inputPassword2" placeholder="search a location here"/>
+      <input type="text" className="search-input form-control" id="inputPassword2" placeholder="search a location here" value={searchInputValue} onChange={handleSearchInputChange}/>
       </div>
-     <button type="submit" className="search btn btn btn-primary mb-2">search</button>
+     <button type="submit" className="search btn btn btn-primary mb-2" onClick={handleLoctionChange}> search</button>    
     </form>
 
    </div>

@@ -1,16 +1,15 @@
-import React from "react";
-import Login from "./Login";
-import Home from "./Home";
-import SignUp from "./SignUp";
+import React, { useState } from 'react';
+import Login from './Login';
+import Home from './Home';
 
+function App() {
 
-function App () {
+  let [isUserLoggedIn, setIsUserLoggedIn ] = useState(true);
+
   return (
     <div className="App">
-       <Home/>
-       <Login/>
-       <SignUp/>
-
+      { isUserLoggedIn && <Home /> }
+      { !isUserLoggedIn && <Login isUserLoggedIn={setIsUserLoggedIn} />  }
     </div>
   );
 }

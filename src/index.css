@@ -42,3 +42,8 @@ background-color:rgb(64, 136, 177);
 color: white;
 padding: 10px 40px;
 }
+
+.location-icon {
+font-size: 150%;
+margin-right: 10px;
+}
